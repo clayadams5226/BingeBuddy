@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BingeBuddy.Views.MyShowsPage"
+             BackgroundColor="#0F0F0F"
+             Title="My Shows">
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,10" BackgroundColor="#1A1A1A">
+            <Label Text="My Shows" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   Margin="0,10,0,5"/>
+            <Label Text="0 shows tracked" 
+                   FontSize="14" 
+                   TextColor="#888888"/>
+        </VerticalStackLayout>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="20" VerticalOptions="Center">
+                <Label Text="📺" 
+                       FontSize="60" 
+                       HorizontalOptions="Center"/>
+                <Label Text="No Shows Yet" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"/>
+                <Label Text="Tap the + button to add your first show!" 
+                       FontSize="16" 
+                       TextColor="#888888" 
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BingeBuddy.Views.WatchlistPage"
+             BackgroundColor="#0F0F0F"
+             Title="Watchlist">
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,10" BackgroundColor="#1A1A1A">
+            <Label Text="Up Next" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   Margin="0,10,0,5"/>
+            <Label Text="Episodes ready to watch" 
+                   FontSize="14" 
+                   TextColor="#888888"/>
+        </VerticalStackLayout>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <!-- Placeholder Card -->
+                <Frame BackgroundColor="#1A1A1A" 
+                       BorderColor="#2A2A2A" 
+                       CornerRadius="10" 
+                       Padding="0"
+                       HasShadow="True">
+                    <Grid ColumnDefinitions="100,*" Padding="15" ColumnSpacing="15">
+                        <BoxView Grid.Column="0" 
+                                 BackgroundColor="#2A2A2A" 
+                                 WidthRequest="100" 
+                                 HeightRequest="140" 
+                                 CornerRadius="8"/>
+                        <VerticalStackLayout Grid.Column="1" Spacing="5">
+                            <Label Text="No shows in watchlist" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" 
+                                   TextColor="White"/>
+                            <Label Text="Add shows to start tracking!" 
+                                   FontSize="14" 
+                                   TextColor="#888888"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

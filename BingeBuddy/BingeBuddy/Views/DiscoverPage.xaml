@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BingeBuddy.Views.DiscoverPage"
+             BackgroundColor="#0F0F0F"
+             Title="Discover">
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="0">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="20,10" BackgroundColor="#1A1A1A">
+            <Label Text="Discover" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="White" 
+                   Margin="0,10,0,5"/>
+            <Label Text="Find your next binge" 
+                   FontSize="14" 
+                   TextColor="#888888"/>
+        </VerticalStackLayout>
+
+        <!-- Search Bar -->
+        <Frame Grid.Row="1" 
+               Margin="15,15,15,0" 
+               Padding="0" 
+               BackgroundColor="#1A1A1A" 
+               BorderColor="#2A2A2A"
+               CornerRadius="10"
+               HasShadow="False">
+            <SearchBar Placeholder="Search TV shows..." 
+                       PlaceholderColor="#888888"
+                       TextColor="White"
+                       BackgroundColor="Transparent"
+                       CancelButtonColor="#3B82F6"/>
+        </Frame>
+
+        <!-- Trending Shows -->
+        <ScrollView Grid.Row="2" Margin="0,15,0,0">
+            <VerticalStackLayout Padding="15" Spacing="10">
+                <Label Text="🔥 Trending Now" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       Margin="5,0,0,10"/>
+
+                <Label Text="Loading..." 
+                       FontSize="16" 
+                       TextColor="#888888" 
+                       HorizontalOptions="Center"
+                       Margin="0,40,0,0"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
