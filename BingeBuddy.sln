@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingeBuddy", "BingeBuddy\BingeBuddy\BingeBuddy.csproj", "{C26234C5-8817-473A-8504-6074FA0B535F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingeBuddy.Droid", "BingeBuddy\BingeBuddy.Droid\BingeBuddy.Droid.csproj", "{6215B656-8509-4011-A837-604CCA039F5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingeBuddy.iOS", "BingeBuddy\BingeBuddy.iOS\BingeBuddy.iOS.csproj", "{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C26234C5-8817-473A-8504-6074FA0B535F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26234C5-8817-473A-8504-6074FA0B535F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26234C5-8817-473A-8504-6074FA0B535F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26234C5-8817-473A-8504-6074FA0B535F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6215B656-8509-4011-A837-604CCA039F5A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD6ADF4F-8FC8-48B2-89D4-E419B82CDE7C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E985536D-A73F-4E81-A4A3-303B2128BC7E}
+	EndGlobalSection
+EndGlobal
