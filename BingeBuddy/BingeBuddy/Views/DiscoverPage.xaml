@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BingeBuddy.ViewModels"
+             xmlns:models="clr-namespace:BingeBuddy.Models"
              x:Class="BingeBuddy.Views.DiscoverPage"
+             x:DataType="viewmodels:DiscoverViewModel"
              BackgroundColor="#0F0F0F"
              Title="Discover">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="0">
+    <Grid RowDefinitions="Auto,*" Padding="0">
 
         <!-- Header -->
         <VerticalStackLayout Grid.Row="0" Padding="20,10" BackgroundColor="#1A1A1A">
@@ -19,35 +22,64 @@
                    TextColor="#888888"/>
         </VerticalStackLayout>
 
-        <!-- Search Bar -->
-        <Frame Grid.Row="1" 
-               Margin="15,15,15,0" 
-               Padding="0" 
-               BackgroundColor="#1A1A1A" 
-               BorderColor="#2A2A2A"
-               CornerRadius="10"
-               HasShadow="False">
-            <SearchBar Placeholder="Search TV shows..." 
-                       PlaceholderColor="#888888"
-                       TextColor="White"
-                       BackgroundColor="Transparent"
-                       CancelButtonColor="#3B82F6"/>
-        </Frame>
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="15" Spacing="20">
 
-        <!-- Trending Shows -->
-        <ScrollView Grid.Row="2" Margin="0,15,0,0">
-            <VerticalStackLayout Padding="15" Spacing="10">
-                <Label Text="🔥 Trending Now" 
-                       FontSize="20" 
-                       FontAttributes="Bold" 
-                       TextColor="White" 
-                       Margin="5,0,0,10"/>
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsLoadingTrending}"
+                                 IsVisible="{Binding IsLoadingTrending}"
+                                 Color="#3B82F6"
+                                 HeightRequest="50"/>
 
-                <Label Text="Loading..." 
-                       FontSize="16" 
-                       TextColor="#888888" 
-                       HorizontalOptions="Center"
-                       Margin="0,40,0,0"/>
+                <!-- Trending Section -->
+                <VerticalStackLayout Spacing="10" IsVisible="{Binding IsLoadingTrending, Converter={StaticResource InvertedBoolConverter}}">
+                    <Label Text="🔥 Trending Now" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           TextColor="White" 
+                           Margin="5,0,0,10"/>
+
+                    <!-- Trending Shows Grid -->
+                    <CollectionView ItemsSource="{Binding TrendingShows}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" 
+                                           Span="2" 
+                                           HorizontalItemSpacing="10" 
+                                           VerticalItemSpacing="15"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Show">
+                                <VerticalStackLayout Spacing="8">
+                                    <!-- Poster Image -->
+                                    <Frame Padding="0" 
+                                           BackgroundColor="#2A2A2A" 
+                                           CornerRadius="8"
+                                           HasShadow="False">
+                                        <Image Source="{Binding PosterUrl}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="240"
+                                               WidthRequest="160"/>
+                                    </Frame>
+
+                                    <!-- Show Title -->
+                                    <Label Text="{Binding Name}" 
+                                           FontSize="14" 
+                                           FontAttributes="Bold" 
+                                           TextColor="White"
+                                           MaxLines="2"
+                                           LineBreakMode="TailTruncation"/>
+
+                                    <!-- Show Year -->
+                                    <Label Text="{Binding Year}" 
+                                           FontSize="12" 
+                                           TextColor="#888888"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
             </VerticalStackLayout>
         </ScrollView>
 

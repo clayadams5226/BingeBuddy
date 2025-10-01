@@ -31,10 +31,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="Views\DiscoverPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

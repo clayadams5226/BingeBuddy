@@ -10,41 +10,19 @@
     Shell.TabBarUnselectedColor="#888888"
     Shell.TabBarTitleColor="White">
 
-    <!-- Global Search Header -->
-    <Shell.TitleView>
-        <Grid Padding="10,5" BackgroundColor="#1A1A1A">
-            <Frame Padding="0" 
-                   BackgroundColor="#2A2A2A" 
-                   BorderColor="Transparent"
-                   CornerRadius="10"
-                   HasShadow="False">
-                <SearchBar x:Name="GlobalSearchBar"
-                           Placeholder="Search TV shows..." 
-                           PlaceholderColor="#888888"
-                           TextColor="White"
-                           BackgroundColor="Transparent"
-                           SearchButtonPressed="OnGlobalSearchPressed"
-                           TextChanged="OnGlobalSearchTextChanged"/>
-            </Frame>
-        </Grid>
-    </Shell.TitleView>
-
     <TabBar>
         <ShellContent
             Title="Discover"
-            Icon="discover_icon.png"
             ContentTemplate="{DataTemplate local:DiscoverPage}"
             Route="DiscoverPage" />
 
         <ShellContent
             Title="My Shows"
-            Icon="tv_icon.png"
             ContentTemplate="{DataTemplate local:MyShowsPage}"
             Route="MyShowsPage" />
 
         <ShellContent
             Title="Watchlist"
-            Icon="watchlist_icon.png"
             ContentTemplate="{DataTemplate local:WatchlistPage}"
             Route="WatchlistPage" />
     </TabBar>

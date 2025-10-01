@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BingeBuddy.ViewModels"
              x:Class="BingeBuddy.Views.WatchlistPage"
+             x:DataType="viewmodels:WatchlistViewModel"
              BackgroundColor="#0F0F0F"
              Title="Watchlist">
 
@@ -20,35 +22,71 @@
         </VerticalStackLayout>
 
         <!-- Content -->
-        <ScrollView Grid.Row="1">
-            <VerticalStackLayout Padding="15" Spacing="15">
+        <RefreshView Grid.Row="1" 
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <VerticalStackLayout Padding="15" Spacing="15">
 
-                <!-- Placeholder Card -->
-                <Frame BackgroundColor="#1A1A1A" 
-                       BorderColor="#2A2A2A" 
-                       CornerRadius="10" 
-                       Padding="0"
-                       HasShadow="True">
-                    <Grid ColumnDefinitions="100,*" Padding="15" ColumnSpacing="15">
-                        <BoxView Grid.Column="0" 
-                                 BackgroundColor="#2A2A2A" 
-                                 WidthRequest="100" 
-                                 HeightRequest="140" 
-                                 CornerRadius="8"/>
-                        <VerticalStackLayout Grid.Column="1" Spacing="5">
-                            <Label Text="No shows in watchlist" 
+                    <!-- Empty State -->
+                    <Frame BackgroundColor="#1A1A1A" 
+                           BorderColor="#2A2A2A" 
+                           CornerRadius="10" 
+                           Padding="20"
+                           HasShadow="True"
+                           IsVisible="{Binding HasEpisodes, Converter={StaticResource InvertedBoolConverter}}">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="No episodes in watchlist" 
                                    FontSize="18" 
                                    FontAttributes="Bold" 
-                                   TextColor="White"/>
-                            <Label Text="Add shows to start tracking!" 
+                                   TextColor="White"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="Add shows and mark episodes to track what's up next!" 
                                    FontSize="14" 
-                                   TextColor="#888888"/>
+                                   TextColor="#888888"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"/>
                         </VerticalStackLayout>
-                    </Grid>
-                </Frame>
+                    </Frame>
 
-            </VerticalStackLayout>
-        </ScrollView>
+                    <!-- Watchlist Items -->
+                    <CollectionView ItemsSource="{Binding UpcomingEpisodes}"
+                                  IsVisible="{Binding HasEpisodes}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="#1A1A1A" 
+                                       BorderColor="#2A2A2A" 
+                                       CornerRadius="10" 
+                                       Padding="0"
+                                       HasShadow="True"
+                                       Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="100,*" Padding="15" ColumnSpacing="15">
+                                        <BoxView Grid.Column="0" 
+                                               BackgroundColor="#2A2A2A" 
+                                               WidthRequest="100" 
+                                               HeightRequest="140" 
+                                               CornerRadius="8"/>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                                            <Label Text="{Binding ShowTitle}" 
+                                                   FontSize="18" 
+                                                   FontAttributes="Bold" 
+                                                   TextColor="White"/>
+                                            <Label Text="{Binding NextEpisode}" 
+                                                   FontSize="14" 
+                                                   TextColor="#888888"/>
+                                            <Label Text="{Binding AirDate}" 
+                                                   FontSize="12" 
+                                                   TextColor="#3B82F6"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
 
     </Grid>
 </ContentPage>
