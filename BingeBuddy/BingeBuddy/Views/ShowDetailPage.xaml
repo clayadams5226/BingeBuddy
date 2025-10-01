@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BingeBuddy.Views.ShowDetailPage"
+             BackgroundColor="#0F0F0F"
+             Title="Show Details">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Backdrop Image -->
+            <Image Source="{Binding BackdropUrl}"
+                   Aspect="AspectFill"
+                   HeightRequest="200"/>
+
+            <!-- Content -->
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <!-- Title and Info -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding Name}" 
+                           FontSize="28" 
+                           FontAttributes="Bold" 
+                           TextColor="White"/>
+                    <Label Text="{Binding Year}" 
+                           FontSize="16" 
+                           TextColor="#888888"/>
+                </VerticalStackLayout>
+
+                <!-- Overview -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Overview" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="White"/>
+                    <Label Text="{Binding Overview}" 
+                           FontSize="14" 
+                           TextColor="#CCCCCC"
+                           LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+
+                <!-- Add to My Shows Button -->
+                <Button Text="Add to My Shows"
+                        BackgroundColor="#3B82F6"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Clicked="OnAddToMyShowsClicked"/>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

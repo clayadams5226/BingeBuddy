@@ -10,6 +10,25 @@
     Shell.TabBarUnselectedColor="#888888"
     Shell.TabBarTitleColor="White">
 
+    <!-- Global Title with Search Button -->
+    <Shell.TitleView>
+        <Grid Padding="10,0" BackgroundColor="#1A1A1A" ColumnDefinitions="*,Auto">
+            <Label Grid.Column="0"
+                   Text="Binge Buddy"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center"/>
+            <Button Grid.Column="1"
+                    Text="🔍"
+                    FontSize="24"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    Clicked="OnSearchClicked"
+                    Padding="10,0"/>
+        </Grid>
+    </Shell.TitleView>
+
     <TabBar>
         <ShellContent
             Title="Discover"

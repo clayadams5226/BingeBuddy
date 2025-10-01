@@ -13,6 +13,8 @@
 
             <!-- Value Converters -->
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <helpers:AddedButtonTextConverter x:Key="AddedButtonTextConverter" />
+            <helpers:AddedButtonColorConverter x:Key="AddedButtonColorConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

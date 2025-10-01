@@ -19,10 +19,15 @@ namespace BingeBuddy
             builder.Services.AddSingleton<MyShowsViewModel>();
             builder.Services.AddSingleton<WatchlistViewModel>();
 
-            // Register Views as Transients with their ViewModels
+            // Register Views
             builder.Services.AddTransient<DiscoverPage>();
             builder.Services.AddTransient<MyShowsPage>();
             builder.Services.AddTransient<WatchlistPage>();
+            builder.Services.AddTransient<SearchResultsModal>();
+
+            // Register App and AppShell
+            builder.Services.AddSingleton<App>();
+            builder.Services.AddSingleton<AppShell>();
 
 #if DEBUG
             builder.Logging.AddDebug();

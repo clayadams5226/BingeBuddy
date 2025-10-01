@@ -37,6 +37,12 @@
 	  <MauiXaml Update="Views\MyShowsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\SearchResultsModal.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ShowDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\WatchlistPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

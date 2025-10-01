@@ -1,15 +1,15 @@
-﻿namespace BingeBuddy
+﻿using BingeBuddy.Services;
+using BingeBuddy.ViewModels;
+
+namespace BingeBuddy
 {
     public partial class App : Application
     {
-        public App()
+        public App(GlobalSearchViewModel searchViewModel, DatabaseService databaseService)
         {
             InitializeComponent();
-        }
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
+            MainPage = new AppShell(searchViewModel, databaseService);
         }
     }
 }

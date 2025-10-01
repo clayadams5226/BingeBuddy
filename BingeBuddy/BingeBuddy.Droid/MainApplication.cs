@@ -1,5 +1,7 @@
 using Android.App;
 using Android.Runtime;
+using BingeBuddy.Services;
+using BingeBuddy.ViewModels;
 
 namespace BingeBuddy
 {

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BingeBuddy.ViewModels"
+             xmlns:models="clr-namespace:BingeBuddy.Models"
+             x:Class="BingeBuddy.Views.SearchResultsModal"
+             x:DataType="viewmodels:GlobalSearchViewModel"
+             BackgroundColor="#0F0F0F"
+             Title="Search">
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+
+        <!-- Search Header -->
+        <Grid Grid.Row="0" 
+              Padding="15,10" 
+              BackgroundColor="#1A1A1A" 
+              ColumnDefinitions="*,Auto">
+
+            <!-- Search Bar -->
+            <Frame Grid.Column="0" 
+                   Padding="0" 
+                   BackgroundColor="#2A2A2A" 
+                   BorderColor="Transparent"
+                   CornerRadius="10"
+                   HasShadow="False">
+                <SearchBar x:Name="SearchInput"
+                           Placeholder="Search TV shows..." 
+                           PlaceholderColor="#888888"
+                           TextColor="White"
+                           BackgroundColor="Transparent"
+                           Text="{Binding SearchQuery}"
+                           SearchCommand="{Binding SearchShowsCommand}"
+                           SearchCommandParameter="{Binding SearchQuery}"/>
+            </Frame>
+
+            <!-- Cancel Button -->
+            <Button Grid.Column="1"
+                    Text="Cancel"
+                    TextColor="White"
+                    BackgroundColor="Transparent"
+                    Margin="10,0,0,0"
+                    Clicked="OnCancelClicked"/>
+        </Grid>
+
+        <!-- Search Results -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="15" Spacing="10">
+
+                <!-- Loading Indicator -->
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                 IsVisible="{Binding IsBusy}"
+                                 Color="#3B82F6"
+                                 HeightRequest="50"
+                                 Margin="0,40,0,0"/>
+
+                <!-- Empty State - No Query -->
+                <VerticalStackLayout Spacing="15" 
+                                   Padding="20,60"
+                                   IsVisible="{Binding HasResults, Converter={StaticResource InvertedBoolConverter}}">
+                    <Label Text="🔍" 
+                           FontSize="48" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Search for TV Shows" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="White" 
+                           HorizontalOptions="Center"/>
+                    <Label Text="Find shows to add to your watchlist" 
+                           FontSize="14" 
+                           TextColor="#888888" 
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+                <!-- Search Results List -->
+                <CollectionView ItemsSource="{Binding SearchResults}"
+                              IsVisible="{Binding HasResults}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:ShowSearchResult">
+                            <Frame BackgroundColor="#1A1A1A" 
+                                   BorderColor="#2A2A2A" 
+                                   CornerRadius="10" 
+                                   Padding="10"
+                                   HasShadow="False"
+                                   Margin="0,0,0,10">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnShowTapped" CommandParameter="{Binding}"/>
+                                </Frame.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="80,*,Auto" ColumnSpacing="15">
+                                    <!-- Poster -->
+                                    <Frame Grid.Column="0" 
+                                           Padding="0" 
+                                           BackgroundColor="#2A2A2A" 
+                                           CornerRadius="6"
+                                           HasShadow="False">
+                                        <Image Source="{Binding Show.PosterUrl}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="120"
+                                               WidthRequest="80"/>
+                                    </Frame>
+
+                                    <!-- Show Info -->
+                                    <VerticalStackLayout Grid.Column="1" 
+                                                       Spacing="5" 
+                                                       VerticalOptions="Center">
+                                        <Label Text="{Binding Show.Name}" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold" 
+                                               TextColor="White"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding Show.Year}" 
+                                               FontSize="14" 
+                                               TextColor="#888888"/>
+                                        <Label Text="{Binding Show.Overview}" 
+                                               FontSize="12" 
+                                               TextColor="#888888"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation"/>
+                                    </VerticalStackLayout>
+
+                                    <!-- Action Button -->
+                                    <Button Grid.Column="2"
+                                            Text="{Binding IsAlreadyAdded, Converter={StaticResource AddedButtonTextConverter}}"
+                                            FontSize="20"
+                                            BackgroundColor="{Binding IsAlreadyAdded, Converter={StaticResource AddedButtonColorConverter}}"
+                                            TextColor="White"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            CornerRadius="25"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GlobalSearchViewModel}}, Path=QuickAddShowCommand}"
+                                            CommandParameter="{Binding}"
+                                            IsEnabled="{Binding IsAlreadyAdded, Converter={StaticResource InvertedBoolConverter}}"
+                                            VerticalOptions="Center"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
