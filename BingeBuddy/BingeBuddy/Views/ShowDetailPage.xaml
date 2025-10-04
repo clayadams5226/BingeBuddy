@@ -1,57 +1,113 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BingeBuddy.Models"
              x:Class="BingeBuddy.Views.ShowDetailPage"
              BackgroundColor="#0F0F0F"
              Title="Show Details">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="0">
+  <ScrollView>
+    <VerticalStackLayout Spacing="0">
 
-            <!-- Backdrop Image -->
-            <Image Source="{Binding BackdropUrl}"
-                   Aspect="AspectFill"
-                   HeightRequest="200"/>
+      <!-- Backdrop Image -->
+      <Image Source="{Binding CurrentShow.BackdropUrl}"
+             Aspect="AspectFill"
+             HeightRequest="200"/>
 
-            <!-- Content -->
-            <VerticalStackLayout Padding="20" Spacing="20">
+      <!-- Content -->
+      <VerticalStackLayout Padding="20" Spacing="20">
 
-                <!-- Title and Info -->
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="{Binding Name}" 
-                           FontSize="28" 
-                           FontAttributes="Bold" 
-                           TextColor="White"/>
-                    <Label Text="{Binding Year}" 
-                           FontSize="16" 
-                           TextColor="#888888"/>
-                </VerticalStackLayout>
-
-                <!-- Overview -->
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Overview" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           TextColor="White"/>
-                    <Label Text="{Binding Overview}" 
-                           FontSize="14" 
-                           TextColor="#CCCCCC"
-                           LineBreakMode="WordWrap"/>
-                </VerticalStackLayout>
-
-                <!-- Add to My Shows Button -->
-                <Button Text="Add to My Shows"
-                        BackgroundColor="#3B82F6"
-                        TextColor="White"
-                        FontSize="16"
-                        FontAttributes="Bold"
-                        CornerRadius="10"
-                        HeightRequest="50"
-                        Clicked="OnAddToMyShowsClicked"/>
-
-            </VerticalStackLayout>
-
+        <!-- Title and Info -->
+        <VerticalStackLayout Spacing="10">
+          <Label Text="{Binding CurrentShow.Name}"
+                 FontSize="28"
+                 FontAttributes="Bold"
+                 TextColor="White"/>
+          <Label Text="{Binding CurrentShow.Year}"
+                 FontSize="16"
+                 TextColor="#888888"/>
         </VerticalStackLayout>
-    </ScrollView>
+
+        <!-- Overview -->
+        <VerticalStackLayout Spacing="10">
+          <Label Text="Overview"
+                 FontSize="18"
+                 FontAttributes="Bold"
+                 TextColor="White"/>
+          <Label Text="{Binding CurrentShow.Overview}"
+                 FontSize="14"
+                 TextColor="#CCCCCC"
+                 LineBreakMode="WordWrap"/>
+        </VerticalStackLayout>
+
+        <!-- Add to My Shows Button -->
+        <Button x:Name="AddButton"
+                Text="Add to My Shows"
+                BackgroundColor="#3B82F6"
+                TextColor="White"
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="50"
+                Clicked="OnAddToMyShowsClicked"/>
+
+        <!-- Similar Shows Section -->
+        <VerticalStackLayout x:Name="SimilarShowsSection" Spacing="15" Margin="0,20,0,0">
+          <Label Text="Similar Shows"
+                 FontSize="20"
+                 FontAttributes="Bold"
+                 TextColor="White"/>
+
+          <!-- Loading Indicator -->
+          <ActivityIndicator x:Name="SimilarShowsLoader"
+                           IsRunning="False"
+                           Color="#3B82F6"
+                           HeightRequest="40"/>
+
+          <!-- Similar Shows Collection -->
+          <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding SimilarShows}">
+              <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="models:Show">
+                  <Border BackgroundColor="#1A1A1A"
+                          StrokeThickness="1"
+                          Stroke="#2A2A2A"
+                          StrokeShape="RoundRectangle 8"
+                          Padding="0"
+                          WidthRequest="120">
+                    <Border.GestureRecognizers>
+                      <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToShowCommand}"
+                                          CommandParameter="{Binding .}"/>
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="8" Padding="8">
+                      <!-- Poster -->
+                      <Border StrokeThickness="0"
+                              StrokeShape="RoundRectangle 8"
+                              BackgroundColor="#2A2A2A">
+                        <Image Source="{Binding PosterUrl}"
+                               Aspect="AspectFill"
+                               HeightRequest="180"
+                               WidthRequest="104"/>
+                      </Border>
+
+                      <!-- Title -->
+                      <Label Text="{Binding Name}"
+                             FontSize="12"
+                             TextColor="White"
+                             MaxLines="2"
+                             LineBreakMode="TailTruncation"/>
+                    </VerticalStackLayout>
+                  </Border>
+                </DataTemplate>
+              </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+          </ScrollView>
+        </VerticalStackLayout>
+
+      </VerticalStackLayout>
+
+    </VerticalStackLayout>
+  </ScrollView>
 
 </ContentPage>

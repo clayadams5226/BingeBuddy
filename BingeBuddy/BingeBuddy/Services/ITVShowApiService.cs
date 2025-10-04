@@ -11,5 +11,10 @@ namespace BingeBuddy.Services
         Task<List<Episode>> GetSeasonEpisodesAsync(int showId, int seasonNumber);
         Task<List<Show>> GetTrendingShowsAsync();
         Task<List<Show>> GetPopularShowsAsync();
+        Task<List<Show>> GetSimilarShowsAsync(int showId);
+
+
     }
+
+
 }

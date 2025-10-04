@@ -165,5 +165,38 @@ namespace BingeBuddy.Services
 
             return new List<Show>();
         }
+
+        public async Task<List<Show>> GetSimilarShowsAsync(int showId)
+        {
+            try
+            {
+                var url = $"tv/{showId}/similar?api_key={API_KEY}";
+                System.Diagnostics.Debug.WriteLine($"[TMDb API] Calling: {_httpClient.BaseAddress}{url}");
+
+                var response = await _httpClient.GetAsync(url);
+                System.Diagnostics.Debug.WriteLine($"[TMDb API] Status: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var result = JObject.Parse(json);
+                    var shows = result["results"]?.ToObject<List<Show>>() ?? new List<Show>();
+
+                    System.Diagnostics.Debug.WriteLine($"[TMDb API] Found {shows.Count} similar shows");
+                    return shows;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"[TMDb API] Error: {errorContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[TMDb API] Exception: {ex.Message}");
+            }
+
+            return new List<Show>();
+        }
     }
 }
