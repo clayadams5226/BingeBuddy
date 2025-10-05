@@ -5,11 +5,11 @@ namespace BingeBuddy
 {
     public partial class App : Application
     {
-        public App(GlobalSearchViewModel searchViewModel, DatabaseService databaseService, ITVShowApiService apiService)
+        public App(GlobalSearchViewModel searchViewModel, IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
-            MainPage = new AppShell(searchViewModel, databaseService, apiService);
+            MainPage = new AppShell(searchViewModel, serviceProvider);
         }
     }
 }

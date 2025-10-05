@@ -1,4 +1,7 @@
-﻿namespace BingeBuddy.iOS
+﻿using BingeBuddy.Services;
+using BingeBuddy.ViewModels;
+
+namespace BingeBuddy.iOS
 {
     public static class MauiProgram
     {
@@ -7,7 +10,14 @@
             var builder = MauiApp.CreateBuilder();
 
             builder
-                .UseSharedMauiApp();
+                .UseMauiApp<App>()
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                });
+
+            builder.ConfigureServices();
 
             return builder.Build();
         }

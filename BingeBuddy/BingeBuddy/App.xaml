@@ -15,6 +15,19 @@
             <helpers:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <helpers:AddedButtonTextConverter x:Key="AddedButtonTextConverter" />
             <helpers:AddedButtonColorConverter x:Key="AddedButtonColorConverter" />
+            <helpers:ProgressToColorConverter x:Key="ProgressToColorConverter" />
+            <helpers:BoolToWatchIconConverter x:Key="BoolToWatchIconConverter" />
+            <helpers:BoolToWatchColorConverter x:Key="BoolToWatchColorConverter" />
+            <helpers:NextEpisodeBackgroundConverter x:Key="NextEpisodeBackgroundConverter" />
+            <helpers:NextEpisodeBorderConverter x:Key="NextEpisodeBorderConverter" />
+            <helpers:ProgressPercentageConverter x:Key="ProgressPercentageConverter" />
+            <helpers:ExpandIconConverter x:Key="ExpandIconConverter" />
+            <helpers:ExpandRotationConverter x:Key="ExpandRotationConverter" />
+            <helpers:SeasonWatchButtonConverter x:Key="SeasonWatchButtonConverter" />
+            <helpers:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+            <helpers:HasAiredTextConverter x:Key="HasAiredTextConverter" />
+            <helpers:CountToBoolConverter x:Key="CountToBoolConverter" />
+            <helpers:IntToBoolConverter x:Key="IntToBoolConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -6,15 +6,13 @@ namespace BingeBuddy.Views
     public partial class SearchResultsModal : ContentPage
     {
         private readonly GlobalSearchViewModel _viewModel;
-        private readonly DatabaseService _databaseService;
-        private readonly ITVShowApiService _apiService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public SearchResultsModal(GlobalSearchViewModel viewModel, DatabaseService databaseService, ITVShowApiService apiService)
+        public SearchResultsModal(GlobalSearchViewModel viewModel, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _viewModel = viewModel;
-            _databaseService = databaseService;
-            _apiService = apiService;
+            _serviceProvider = serviceProvider;
             BindingContext = _viewModel;
         }
 
@@ -34,8 +32,16 @@ namespace BingeBuddy.Views
         {
             if (sender is Frame frame && frame.BindingContext is ShowSearchResult result)
             {
-                // Navigate to show detail page - pass services
-                var detailPage = new ShowDetailPage(result.Show, _databaseService, _apiService);
+                // Get ShowDetailPage and ViewModel from DI
+                var detailPage = _serviceProvider.GetRequiredService<ShowDetailPage>();
+                var detailViewModel = _serviceProvider.GetRequiredService<ShowDetailViewModel>();
+
+                // Initialize the ViewModel with the show data
+                await detailViewModel.InitializeAsync(result.Show);
+
+                // Set binding context (already set in page constructor, but ensure it's the right instance)
+                detailPage.BindingContext = detailViewModel;
+
                 await Navigation.PushAsync(detailPage);
             }
         }

@@ -55,10 +55,14 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:UserShow">
-                            <VerticalStackLayout Spacing="8">
+                            <VerticalStackLayout Spacing="8" BackgroundColor="Transparent">
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnShowTapped"/>
+                                </VerticalStackLayout.GestureRecognizers>
+
                                 <!-- Poster Image -->
-                                <Frame Padding="0" 
-                                       BackgroundColor="#2A2A2A" 
+                                <Frame Padding="0"
+                                       BackgroundColor="#2A2A2A"
                                        CornerRadius="8"
                                        HasShadow="False">
                                     <Image Source="{Binding PosterUrl}"
@@ -68,17 +72,32 @@
                                 </Frame>
 
                                 <!-- Show Title -->
-                                <Label Text="{Binding Title}" 
-                                       FontSize="14" 
-                                       FontAttributes="Bold" 
+                                <Label Text="{Binding Title}"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
                                        TextColor="White"
                                        MaxLines="2"
                                        LineBreakMode="TailTruncation"/>
 
-                                <!-- Status -->
-                                <Label Text="{Binding Status}" 
-                                       FontSize="12" 
+                                <!-- Progress Info -->
+                                <Label Text="{Binding Status}"
+                                       FontSize="12"
                                        TextColor="#888888"/>
+
+                                <!-- Last Watched -->
+                                <Label Text="{Binding LastWatchedSeason, StringFormat='S{0:D2}E{1:D2}'}"
+                                       FontSize="11"
+                                       TextColor="#3B82F6"
+                                       IsVisible="{Binding LastWatchedSeason, Converter={StaticResource IntToBoolConverter}}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="S" TextColor="#3B82F6"/>
+                                            <Span Text="{Binding LastWatchedSeason, StringFormat='{0:D2}'}" TextColor="#3B82F6"/>
+                                            <Span Text="E" TextColor="#3B82F6"/>
+                                            <Span Text="{Binding LastWatchedEpisode, StringFormat='{0:D2}'}" TextColor="#3B82F6"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
                             </VerticalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

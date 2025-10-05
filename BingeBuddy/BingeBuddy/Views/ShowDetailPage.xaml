@@ -1,113 +1,416 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BingeBuddy.ViewModels"
              xmlns:models="clr-namespace:BingeBuddy.Models"
+             xmlns:helpers="clr-namespace:BingeBuddy.Helpers"
              x:Class="BingeBuddy.Views.ShowDetailPage"
+             x:DataType="viewmodels:ShowDetailViewModel"
              BackgroundColor="#0F0F0F"
-             Title="Show Details">
+             Title="{Binding Title}">
 
-  <ScrollView>
-    <VerticalStackLayout Spacing="0">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <helpers:ProgressToColorConverter x:Key="ProgressToColorConverter" />
+            <helpers:BoolToWatchIconConverter x:Key="BoolToWatchIconConverter" />
+            <helpers:BoolToWatchColorConverter x:Key="BoolToWatchColorConverter" />
+            <helpers:NextEpisodeBackgroundConverter x:Key="NextEpisodeBackgroundConverter" />
+            <helpers:NextEpisodeBorderConverter x:Key="NextEpisodeBorderConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-      <!-- Backdrop Image -->
-      <Image Source="{Binding CurrentShow.BackdropUrl}"
-             Aspect="AspectFill"
-             HeightRequest="200"/>
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
 
-      <!-- Content -->
-      <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Backdrop Image -->
+            <Image Source="{Binding CurrentShow.BackdropUrl}"
+                   Aspect="AspectFill"
+                   HeightRequest="200"/>
 
-        <!-- Title and Info -->
-        <VerticalStackLayout Spacing="10">
-          <Label Text="{Binding CurrentShow.Name}"
-                 FontSize="28"
-                 FontAttributes="Bold"
-                 TextColor="White"/>
-          <Label Text="{Binding CurrentShow.Year}"
-                 FontSize="16"
-                 TextColor="#888888"/>
-        </VerticalStackLayout>
+            <!-- Content -->
+            <VerticalStackLayout Padding="20" Spacing="20">
 
-        <!-- Overview -->
-        <VerticalStackLayout Spacing="10">
-          <Label Text="Overview"
-                 FontSize="18"
-                 FontAttributes="Bold"
-                 TextColor="White"/>
-          <Label Text="{Binding CurrentShow.Overview}"
-                 FontSize="14"
-                 TextColor="#CCCCCC"
-                 LineBreakMode="WordWrap"/>
-        </VerticalStackLayout>
+                <!-- Title and Info -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding CurrentShow.Name}"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="{Binding CurrentShow.Year}"
+                               FontSize="16"
+                               TextColor="#888888"/>
+                        <Label Text="•"
+                               FontSize="16"
+                               TextColor="#888888"/>
+                        <Label Text="{Binding CurrentShow.Status}"
+                               FontSize="16"
+                               TextColor="#888888"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
 
-        <!-- Add to My Shows Button -->
-        <Button x:Name="AddButton"
-                Text="Add to My Shows"
-                BackgroundColor="#3B82F6"
-                TextColor="White"
-                FontSize="16"
-                FontAttributes="Bold"
-                CornerRadius="10"
-                HeightRequest="50"
-                Clicked="OnAddToMyShowsClicked"/>
+                <!-- Progress Section (Only visible if show is in library) -->
+                <Border IsVisible="{Binding IsInLibrary}"
+                        BackgroundColor="#1A1A1A"
+                        Stroke="#2A2A2A"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Your Progress"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
 
-        <!-- Similar Shows Section -->
-        <VerticalStackLayout x:Name="SimilarShowsSection" Spacing="15" Margin="0,20,0,0">
-          <Label Text="Similar Shows"
-                 FontSize="20"
-                 FontAttributes="Bold"
-                 TextColor="White"/>
+                        <!-- Progress Bar -->
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="8">
+                            <ProgressBar Grid.Column="0" Grid.Row="0"
+                                       Progress="{Binding Progress.CompletionPercentage, Converter={StaticResource ProgressPercentageConverter}}"
+                                       ProgressColor="{Binding Progress.CompletionPercentage, Converter={StaticResource ProgressToColorConverter}}"
+                                       HeightRequest="8"
+                                       VerticalOptions="Center"/>
 
-          <!-- Loading Indicator -->
-          <ActivityIndicator x:Name="SimilarShowsLoader"
-                           IsRunning="False"
-                           Color="#3B82F6"
-                           HeightRequest="40"/>
+                            <Label Grid.Column="1" Grid.Row="0"
+                                   Text="{Binding Progress.CompletionPercentage, StringFormat='{0:F0}%'}"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding Progress.CompletionPercentage, Converter={StaticResource ProgressToColorConverter}}"
+                                   VerticalOptions="Center"/>
 
-          <!-- Similar Shows Collection -->
-          <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
-            <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding SimilarShows}">
-              <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="models:Show">
-                  <Border BackgroundColor="#1A1A1A"
-                          StrokeThickness="1"
-                          Stroke="#2A2A2A"
-                          StrokeShape="RoundRectangle 8"
-                          Padding="0"
-                          WidthRequest="120">
-                    <Border.GestureRecognizers>
-                      <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NavigateToShowCommand}"
-                                          CommandParameter="{Binding .}"/>
-                    </Border.GestureRecognizers>
+                            <Label Grid.Column="0" Grid.Row="1"
+                                   Text="{Binding Progress.StatusText}"
+                                   FontSize="12"
+                                   TextColor="#888888"/>
 
-                    <VerticalStackLayout Spacing="8" Padding="8">
-                      <!-- Poster -->
-                      <Border StrokeThickness="0"
-                              StrokeShape="RoundRectangle 8"
-                              BackgroundColor="#2A2A2A">
-                        <Image Source="{Binding PosterUrl}"
-                               Aspect="AspectFill"
-                               HeightRequest="180"
-                               WidthRequest="104"/>
-                      </Border>
+                            <Label Grid.Column="1" Grid.Row="1"
+                                   Text="{Binding Progress.WatchedEpisodes, StringFormat='{0} of {1} episodes', TargetNullValue='0 episodes'}"
+                                   FormattedText="{Binding Progress.WatchedEpisodes, StringFormat='{0} / {1}'}"
+                                   FontSize="12"
+                                   TextColor="#888888"
+                                   HorizontalOptions="End">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Progress.WatchedEpisodes}" TextColor="White"/>
+                                        <Span Text=" / " TextColor="#888888"/>
+                                        <Span Text="{Binding Progress.TotalEpisodes}" TextColor="#888888"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
 
-                      <!-- Title -->
-                      <Label Text="{Binding Name}"
-                             FontSize="12"
-                             TextColor="White"
-                             MaxLines="2"
-                             LineBreakMode="TailTruncation"/>
+                        <!-- Next Episode Card -->
+                        <Border IsVisible="{Binding Progress.HasNextEpisode}"
+                                BackgroundColor="#2A2A2A"
+                                Stroke="#3B82F6"
+                                StrokeThickness="2"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="12"
+                                Margin="0,8,0,0">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border Grid.Column="0"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 6"
+                                        WidthRequest="80"
+                                        HeightRequest="50"
+                                        BackgroundColor="#1A1A1A">
+                                    <Image Source="{Binding Progress.NextEpisode.StillUrl}"
+                                           Aspect="AspectFill"/>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="▶ Next Episode"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           TextColor="#3B82F6"/>
+                                    <Label Text="{Binding Progress.NextEpisode.EpisodeTitle}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="White"
+                                           MaxLines="1"
+                                           LineBreakMode="TailTruncation"/>
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="{Binding Progress.NextEpisode.SeasonNumber, StringFormat='S{0:D2}'}"
+                                               FontSize="12"
+                                               TextColor="#888888"/>
+                                        <Label Text="{Binding Progress.NextEpisode.EpisodeNumberText}"
+                                               FontSize="12"
+                                               TextColor="#888888"/>
+                                        <Label Text="•"
+                                               FontSize="12"
+                                               TextColor="#888888"/>
+                                        <Label Text="{Binding Progress.NextEpisode.AirDateText}"
+                                               FontSize="12"
+                                               TextColor="{Binding Progress.NextEpisode.HasAired, Converter={StaticResource BoolToWatchColorConverter}}"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
                     </VerticalStackLayout>
-                  </Border>
-                </DataTemplate>
-              </BindableLayout.ItemTemplate>
-            </HorizontalStackLayout>
-          </ScrollView>
+                </Border>
+
+                <!-- Overview -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Overview"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <Label Text="{Binding CurrentShow.Overview}"
+                           FontSize="14"
+                           TextColor="#CCCCCC"
+                           LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+
+                <!-- Add to My Shows Button -->
+                <Button Text="{Binding AddButtonText}"
+                        BackgroundColor="{Binding AddButtonColor}"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        Command="{Binding AddToMyShowsCommand}"
+                        IsEnabled="{Binding IsInLibrary, Converter={StaticResource InvertedBoolConverter}}"/>
+
+                <!-- Seasons Section -->
+                <VerticalStackLayout Spacing="15" IsVisible="{Binding HasSeasons}">
+                    <Label Text="Seasons &amp; Episodes"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+
+                    <!-- Loading Indicator -->
+                    <ActivityIndicator IsRunning="{Binding IsLoadingSeasons}"
+                                     Color="#3B82F6"
+                                     HeightRequest="40"/>
+
+                    <!-- Seasons List -->
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Seasons}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:SeasonViewModel">
+                                <Border BackgroundColor="#1A1A1A"
+                                        Stroke="#2A2A2A"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 8"
+                                        Padding="0">
+                                    <VerticalStackLayout Spacing="0">
+                                        <!-- Season Header (Clickable) -->
+                                        <Grid Padding="16" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ShowDetailViewModel}}, Path=ToggleSeasonExpandedCommand}"
+                                                                    CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+
+                                            <!-- Season Info -->
+                                            <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                                <Label Text="{Binding SeasonName}"
+                                                       FontSize="18"
+                                                       FontAttributes="Bold"
+                                                       TextColor="White"/>
+                                                <Label Text="{Binding EpisodeCountText}"
+                                                       FontSize="13"
+                                                       TextColor="#888888"/>
+                                            </VerticalStackLayout>
+
+                                            <!-- Progress Indicator -->
+                                            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                                <Label Text="{Binding ProgressText}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{Binding ProgressPercentage, Converter={StaticResource ProgressToColorConverter}}"
+                                                       HorizontalOptions="End"/>
+                                                <ProgressBar Progress="{Binding ProgressPercentage, Converter={StaticResource ProgressPercentageConverter}}"
+                                                           ProgressColor="{Binding ProgressPercentage, Converter={StaticResource ProgressToColorConverter}}"
+                                                           HeightRequest="4"
+                                                           WidthRequest="60"/>
+                                            </VerticalStackLayout>
+
+                                            <!-- Expand Icon -->
+                                            <Label Grid.Column="2"
+                                                   Text="{Binding IsExpanded, Converter={StaticResource ExpandIconConverter}}"
+                                                   FontSize="20"
+                                                   TextColor="#888888"
+                                                   VerticalOptions="Center"
+                                                   Rotation="{Binding IsExpanded, Converter={StaticResource ExpandRotationConverter}}"/>
+                                        </Grid>
+
+                                        <!-- Season Actions (when expanded) -->
+                                        <HorizontalStackLayout IsVisible="{Binding IsExpanded}"
+                                                             Padding="16,0,16,8"
+                                                             Spacing="8">
+                                            <Button Text="{Binding WatchedCount, Converter={StaticResource SeasonWatchButtonConverter}}"
+                                                    FontSize="13"
+                                                    Padding="12,6"
+                                                    BackgroundColor="#2A2A2A"
+                                                    TextColor="White"
+                                                    CornerRadius="6"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ShowDetailViewModel}}, Path=ToggleSeasonWatchedCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                        </HorizontalStackLayout>
+
+                                        <!-- Episodes List (when expanded) -->
+                                        <VerticalStackLayout IsVisible="{Binding IsExpanded}"
+                                                           Spacing="0"
+                                                           Padding="8,0,8,8"
+                                                           BindableLayout.ItemsSource="{Binding Episodes}">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="models:EpisodeViewModel">
+                                                    <Border BackgroundColor="{Binding IsNextToWatch, Converter={StaticResource NextEpisodeBackgroundConverter}}"
+                                                            Stroke="{Binding IsNextToWatch, Converter={StaticResource NextEpisodeBorderConverter}}"
+                                                            StrokeThickness="1"
+                                                            StrokeShape="RoundRectangle 6"
+                                                            Padding="12"
+                                                            Margin="0,4">
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ShowDetailViewModel}}, Path=ToggleEpisodeWatchedCommand}"
+                                                                                CommandParameter="{Binding .}"/>
+                                                        </Border.GestureRecognizers>
+
+                                                        <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12">
+                                                            <!-- Watch Status Icon -->
+                                                            <Border Grid.Column="0"
+                                                                    WidthRequest="28"
+                                                                    HeightRequest="28"
+                                                                    BackgroundColor="{Binding IsWatched, Converter={StaticResource BoolToWatchColorConverter}}"
+                                                                    StrokeThickness="2"
+                                                                    Stroke="{Binding IsWatched, Converter={StaticResource BoolToWatchColorConverter}}"
+                                                                    StrokeShape="RoundRectangle 14"
+                                                                    VerticalOptions="Start">
+                                                                <Label Text="{Binding IsWatched, Converter={StaticResource BoolToWatchIconConverter}}"
+                                                                       FontSize="16"
+                                                                       FontAttributes="Bold"
+                                                                       TextColor="White"
+                                                                       HorizontalOptions="Center"
+                                                                       VerticalOptions="Center"/>
+                                                            </Border>
+
+                                                            <!-- Episode Thumbnail -->
+                                                            <Border Grid.Column="1"
+                                                                    StrokeThickness="0"
+                                                                    StrokeShape="RoundRectangle 4"
+                                                                    WidthRequest="100"
+                                                                    HeightRequest="60"
+                                                                    BackgroundColor="#2A2A2A"
+                                                                    VerticalOptions="Start">
+                                                                <Image Source="{Binding StillUrl}"
+                                                                       Aspect="AspectFill"/>
+                                                            </Border>
+
+                                                            <!-- Episode Info -->
+                                                            <VerticalStackLayout Grid.Column="2" Spacing="4" VerticalOptions="Center">
+                                                                <HorizontalStackLayout Spacing="8">
+                                                                    <Label Text="{Binding EpisodeNumberText}"
+                                                                           FontSize="13"
+                                                                           FontAttributes="Bold"
+                                                                           TextColor="#3B82F6"/>
+                                                                    <Label Text="{Binding EpisodeTitle}"
+                                                                           FontSize="14"
+                                                                           FontAttributes="Bold"
+                                                                           TextColor="White"
+                                                                           LineBreakMode="TailTruncation"
+                                                                           MaxLines="1"/>
+                                                                    <Label Text="⭐ NEXT"
+                                                                           IsVisible="{Binding IsNextToWatch}"
+                                                                           FontSize="11"
+                                                                           FontAttributes="Bold"
+                                                                           TextColor="#F59E0B"
+                                                                           VerticalOptions="Center"/>
+                                                                </HorizontalStackLayout>
+
+                                                                <Label Text="{Binding EpisodeDescription}"
+                                                                       FontSize="12"
+                                                                       TextColor="#888888"
+                                                                       MaxLines="2"
+                                                                       LineBreakMode="TailTruncation"/>
+
+                                                                <HorizontalStackLayout Spacing="8">
+                                                                    <Label Text="{Binding AirDateText}"
+                                                                           FontSize="11"
+                                                                           TextColor="#666666"/>
+                                                                    <Label Text="•"
+                                                                           FontSize="11"
+                                                                           TextColor="#666666"
+                                                                           IsVisible="{Binding RuntimeText, Converter={StaticResource StringNotEmptyConverter}}"/>
+                                                                    <Label Text="{Binding RuntimeText}"
+                                                                           FontSize="11"
+                                                                           TextColor="#666666"
+                                                                           IsVisible="{Binding RuntimeText, Converter={StaticResource StringNotEmptyConverter}}"/>
+                                                                </HorizontalStackLayout>
+                                                            </VerticalStackLayout>
+
+                                                            <!-- Air Status Indicator -->
+                                                            <Label Grid.Column="3"
+                                                                   Text="{Binding HasAired, Converter={StaticResource HasAiredTextConverter}}"
+                                                                   FontSize="11"
+                                                                   TextColor="{Binding HasAired, Converter={StaticResource BoolToWatchColorConverter}}"
+                                                                   VerticalOptions="Start"
+                                                                   Padding="8,4"
+                                                                   IsVisible="{Binding HasAired, Converter={StaticResource InvertedBoolConverter}}"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Similar Shows Section -->
+                <VerticalStackLayout Spacing="15" Margin="0,20,0,0" IsVisible="{Binding SimilarShows.Count, Converter={StaticResource CountToBoolConverter}}">
+                    <Label Text="Similar Shows"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+
+                    <!-- Loading Indicator -->
+                    <ActivityIndicator IsRunning="{Binding IsLoadingSimilar}"
+                                     Color="#3B82F6"
+                                     HeightRequest="40"/>
+
+                    <!-- Similar Shows Collection -->
+                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                        <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding SimilarShows}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Show">
+                                    <Border BackgroundColor="#1A1A1A"
+                                            StrokeThickness="1"
+                                            Stroke="#2A2A2A"
+                                            StrokeShape="RoundRectangle 8"
+                                            Padding="0"
+                                            WidthRequest="120">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnSimilarShowTapped"/>
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout Spacing="8" Padding="8">
+                                            <!-- Poster -->
+                                            <Border StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 8"
+                                                    BackgroundColor="#2A2A2A">
+                                                <Image Source="{Binding PosterUrl}"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="180"
+                                                       WidthRequest="104"/>
+                                            </Border>
+
+                                            <!-- Title -->
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="12"
+                                                   TextColor="White"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation"/>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+                    </ScrollView>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
         </VerticalStackLayout>
-
-      </VerticalStackLayout>
-
-    </VerticalStackLayout>
-  </ScrollView>
+    </ScrollView>
 
 </ContentPage>

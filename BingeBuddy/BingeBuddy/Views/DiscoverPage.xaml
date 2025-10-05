@@ -50,10 +50,14 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:Show">
-                                <VerticalStackLayout Spacing="8">
+                                <VerticalStackLayout Spacing="8" BackgroundColor="Transparent">
+                                    <VerticalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnShowTapped"/>
+                                    </VerticalStackLayout.GestureRecognizers>
+
                                     <!-- Poster Image -->
-                                    <Frame Padding="0" 
-                                           BackgroundColor="#2A2A2A" 
+                                    <Frame Padding="0"
+                                           BackgroundColor="#2A2A2A"
                                            CornerRadius="8"
                                            HasShadow="False">
                                         <Image Source="{Binding PosterUrl}"
@@ -63,16 +67,16 @@
                                     </Frame>
 
                                     <!-- Show Title -->
-                                    <Label Text="{Binding Name}" 
-                                           FontSize="14" 
-                                           FontAttributes="Bold" 
+                                    <Label Text="{Binding Name}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
                                            TextColor="White"
                                            MaxLines="2"
                                            LineBreakMode="TailTruncation"/>
 
                                     <!-- Show Year -->
-                                    <Label Text="{Binding Year}" 
-                                           FontSize="12" 
+                                    <Label Text="{Binding Year}"
+                                           FontSize="12"
                                            TextColor="#888888"/>
                                 </VerticalStackLayout>
                             </DataTemplate>

@@ -7,20 +7,18 @@ namespace BingeBuddy
     public partial class AppShell : Shell
     {
         private readonly GlobalSearchViewModel _searchViewModel;
-        private readonly DatabaseService _databaseService;
-        private readonly ITVShowApiService _apiService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public AppShell(GlobalSearchViewModel searchViewModel, DatabaseService databaseService, ITVShowApiService apiService)
+        public AppShell(GlobalSearchViewModel searchViewModel, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _searchViewModel = searchViewModel;
-            _databaseService = databaseService;
-            _apiService = apiService;
+            _serviceProvider = serviceProvider;
         }
 
         private async void OnSearchClicked(object sender, EventArgs e)
         {
-            var searchModal = new SearchResultsModal(_searchViewModel, _databaseService, _apiService);
+            var searchModal = new SearchResultsModal(_searchViewModel, _serviceProvider);
             await Navigation.PushModalAsync(new NavigationPage(searchModal)
             {
                 BarBackgroundColor = Color.FromArgb("#1A1A1A"),

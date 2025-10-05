@@ -54,28 +54,31 @@
                                   IsVisible="{Binding HasEpisodes}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Frame BackgroundColor="#1A1A1A" 
-                                       BorderColor="#2A2A2A" 
-                                       CornerRadius="10" 
+                                <Frame BackgroundColor="#1A1A1A"
+                                       BorderColor="#2A2A2A"
+                                       CornerRadius="10"
                                        Padding="0"
                                        HasShadow="True"
                                        Margin="0,0,0,10">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEpisodeTapped"/>
+                                    </Frame.GestureRecognizers>
                                     <Grid ColumnDefinitions="100,*" Padding="15" ColumnSpacing="15">
-                                        <BoxView Grid.Column="0" 
-                                               BackgroundColor="#2A2A2A" 
-                                               WidthRequest="100" 
-                                               HeightRequest="140" 
+                                        <BoxView Grid.Column="0"
+                                               BackgroundColor="#2A2A2A"
+                                               WidthRequest="100"
+                                               HeightRequest="140"
                                                CornerRadius="8"/>
                                         <VerticalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
-                                            <Label Text="{Binding ShowTitle}" 
-                                                   FontSize="18" 
-                                                   FontAttributes="Bold" 
+                                            <Label Text="{Binding ShowTitle}"
+                                                   FontSize="18"
+                                                   FontAttributes="Bold"
                                                    TextColor="White"/>
-                                            <Label Text="{Binding NextEpisode}" 
-                                                   FontSize="14" 
+                                            <Label Text="{Binding NextEpisode}"
+                                                   FontSize="14"
                                                    TextColor="#888888"/>
-                                            <Label Text="{Binding AirDate}" 
-                                                   FontSize="12" 
+                                            <Label Text="{Binding AirDate}"
+                                                   FontSize="12"
                                                    TextColor="#3B82F6"/>
                                         </VerticalStackLayout>
                                     </Grid>
